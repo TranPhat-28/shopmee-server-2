@@ -11,11 +11,11 @@ dotenv.config();
 const methodOverride = require('method-override');
 
 
-// Get information from html form
-app.use(express.urlencoded({ extended: false }));
 
+// Get information from html form
+//app.use(express.urlencoded({ extended: false }));
 // Set the directory for public files: media and css
-app.use(express.static( __dirname + '/public'));
+//app.use(express.static( __dirname + '/public'));
 
 
 
@@ -25,7 +25,7 @@ mongoose.connect(db, {useUnifiedTopology: true, useNewUrlParser: true})
 .then(() => console.log('Connected to MongoDB'))
 .catch(e => console.log(e.message));
 
-/*
+
 
 // Setup session
 app.use(session({
@@ -42,7 +42,7 @@ app.use(methodOverride('_method'));
 
 
 
-
+/*
 // ROOT route - will redirect to Home
 app.get('/', (req, res) => {
     res.redirect('/home');
