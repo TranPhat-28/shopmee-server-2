@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const userLogin = (req, res) => {
     const { email, password } = req.body;
@@ -20,7 +21,13 @@ const userLogin = (req, res) => {
                 // Perform checking password
                 bcrypt.compare(password, user.password, function(err, result) {
                     if (result === true){
-                        res.status(200).json('OK');
+                        // OK, create JWT
+                        const token = jwt.sign({
+                            _id: user._id,
+                            email: user.email  
+                        }, process.env.JWT_SECRET, {expiresIn: '1d'});
+                        // Send back to the user
+                        res.status(200).json({email, token});
                     }
                     else{
                         res.status(400).json('Wrong password');
