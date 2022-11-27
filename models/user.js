@@ -10,17 +10,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    phoneNumber: {
+    phonenumber: {
         type: Number,
         required: true
     },
     address: {
         type: String,
         required: true
-    },
-    role: {
-        type: String,
-        default: 'customer'
     },
     dateJoined: {
         type: Date,

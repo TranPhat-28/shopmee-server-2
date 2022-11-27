@@ -1,0 +1,63 @@
+const bcrypt = require('bcrypt');
+const User = require('../../models/user');
+
+const userRegister = (req, res) => {
+    const { email, password, confirm, phonenumber, address } = req.body;
+
+    if (!email || !password || !confirm || !phonenumber || !address) {
+        res.status(400).json('Missing required field(s)');
+    }
+    else if (!email.includes('@')){
+        res.status(400).json('Wrong email format');
+    }
+    else if (password !== confirm) {
+        res.status(400).json('Password and confirm do not match');
+    }
+    else {
+        // Good input
+        // Check for duplicated email
+        User.exists({ email: email }).then((user) => {
+            if (user) {
+                //console.log("This email already existed!");
+                res.status(400).json('Email already existed');
+            }
+            else {
+                // Hash the provided password
+                bcrypt.hash(password, 10).then(hash => {
+
+                    // Get all the input from user and create a new User
+                    const newUser = new User({
+                        email: email,
+                        password: hash,
+                        phonenumber: phonenumber,
+                        address: address
+                    });
+
+                    // Save to the database
+                    newUser.save()
+                    .then(() => {
+                        // Create corresponding cart
+                        /*
+                        const newCart = new Cart({
+                            email: email,
+                            total: 0
+                        })
+                        newCart.save()
+                        .then(() => {
+                            //console.log('Registration success! Redirecting to login...');
+                        })
+                        */
+                        res.status(200).json('OK');
+                    })
+                    .catch(e => {
+                        res.status(400).json('Something went wrong, please try again later');
+                        console.log(e.message);
+                    })
+                });
+            }
+        });
+        //res.status(200).json('OK');
+    }
+}
+
+module.exports = userRegister;
