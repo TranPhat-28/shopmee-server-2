@@ -20,7 +20,10 @@ const userLogin = (req, res) => {
             else{
                 // Perform checking password
                 bcrypt.compare(password, user.password, function(err, result) {
-                    if (result === true){
+                    if (err) {
+                        res.status(400).json(err.message)
+                    } 
+                    else if (result === true){
                         // OK, create JWT
                         const token = jwt.sign({
                             _id: user._id,
