@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../../models/user');
+const Cart = require('../../models/cart');
 
 const userRegister = (req, res) => {
     const { email, password, confirm, phonenumber, address } = req.body;
@@ -32,27 +33,33 @@ const userRegister = (req, res) => {
                         phonenumber: phonenumber,
                         address: address
                     });
+                    // Create corresponding cart
+                    const newCart = new Cart({
+                        email: email,
+                        total: 0
+                    })
 
                     // Save to the database
+                    Promise.all([newUser.save(), newCart.save()]).then((values) => {
+                        //console.log(values);
+                        res.status(200).json('OK');
+                    })
+                    .catch((e) => {
+                        console.log(e.message);
+                        res.status(400).json('Something went wrong, please try again later');
+                    })
+
+
+                    /*
                     newUser.save()
                     .then(() => {
-                        // Create corresponding cart
-                        /*
-                        const newCart = new Cart({
-                            email: email,
-                            total: 0
-                        })
-                        newCart.save()
-                        .then(() => {
-                            //console.log('Registration success! Redirecting to login...');
-                        })
-                        */
                         res.status(200).json('OK');
                     })
                     .catch(e => {
                         res.status(400).json('Something went wrong, please try again later');
                         console.log(e.message);
                     })
+                    */
                 });
             }
         });
