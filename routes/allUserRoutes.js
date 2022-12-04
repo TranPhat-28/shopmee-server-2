@@ -25,11 +25,12 @@ router.get('/category/:category', fetchCategory);
 const fetchDetail = require("../controllers/userControllers/fetchDetail");
 router.get('/product/:id', fetchDetail);
 
+/*
 router.post('/add', (req, res) => {
     const newProduct = new Product({
-        productName: "Samsung",
-        description: "A good phone to have nowadays. But it's more expensive than some other mid-range brands.",
-        price: 5000000,
+        productName: "IPhone",
+        description: "Wow you rich kid! Having this phone is the testament of a true playboy",
+        price: 20000000,
         stockQuantity: 10,
         sold: 0,
         category: "electronics"
@@ -37,6 +38,7 @@ router.post('/add', (req, res) => {
 
     newProduct.save().then(() => { res.json("OK") });
 })
+*/
 
 
 /////////////////////////////////////
