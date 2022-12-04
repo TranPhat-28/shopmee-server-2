@@ -27,7 +27,8 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     productImage: {
-        type: String
+        type: String,
+        default: "https://drive.google.com/uc?id=1AiOH1J6m5B8CawvCrD6XqACZyDj75-Kd"
     },
     dateAdded: {
         type: Date,

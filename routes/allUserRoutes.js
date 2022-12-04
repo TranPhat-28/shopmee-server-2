@@ -17,6 +17,27 @@ router.get('/newArrivals', newArrivalsFetch);
 // Best sellers
 router.get('/bestSellers', bestSellersFetch);
 
+// Fetch all products of a category
+const fetchCategory = require("../controllers/userControllers/fetchCategory");
+router.get('/category/:category', fetchCategory);
+
+// For fetching detail information of a single product
+const fetchDetail = require("../controllers/userControllers/fetchDetail");
+router.get('/product/:id', fetchDetail);
+
+router.post('/add', (req, res) => {
+    const newProduct = new Product({
+        productName: "Samsung",
+        description: "A good phone to have nowadays. But it's more expensive than some other mid-range brands.",
+        price: 5000000,
+        stockQuantity: 10,
+        sold: 0,
+        category: "electronics"
+    })
+
+    newProduct.save().then(() => { res.json("OK") });
+})
+
 
 /////////////////////////////////////
 // AUTHENTICATED AND AUTHORIZED ROUTES
