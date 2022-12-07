@@ -25,6 +25,9 @@ router.get('/category/:category', fetchCategory);
 const fetchDetail = require("../controllers/userControllers/fetchDetail");
 router.get('/product/:id', fetchDetail);
 
+// For searching
+const fetchSearch = require("../controllers/userControllers/fetchSearch");
+router.get('/search', fetchSearch);
 /*
 router.post('/add', (req, res) => {
     const newProduct = new Product({
