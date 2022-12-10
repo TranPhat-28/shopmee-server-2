@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 
 // Schema for storing product
 const cartItemSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    price: {
-        type: Number,
+    itemId: {
+        type: mongoose.SchemaTypes.ObjectId,
         required: true,
     },
     quantity: {
+        type: Number,
+        required: true,
+    },
+    total: {
         type: Number,
         required: true,
     }

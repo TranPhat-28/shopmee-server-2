@@ -5,7 +5,7 @@ const requireAuth = (req, res, next) => {
     const {authorization} = req.headers;
     // If no JWT found
     if (!authorization){
-        return res.status(401).json({ error: "Unauthorized: Please login first" });
+        return res.status(401).json({ error: "No authentication token found! Please login again" });
     }
     
     const token = authorization.split(' ')[1];

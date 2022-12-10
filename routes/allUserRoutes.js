@@ -28,12 +28,13 @@ router.get('/product/:id', fetchDetail);
 // For searching
 const fetchSearch = require("../controllers/userControllers/fetchSearch");
 router.get('/search', fetchSearch);
+
 /*
 router.post('/add', (req, res) => {
     const newProduct = new Product({
-        productName: "IPhone",
-        description: "Wow you rich kid! Having this phone is the testament of a true playboy",
-        price: 20000000,
+        productName: "Oppo Reno",
+        description: "A very competent product with a reasonable price.",
+        price: 9000000,
         stockQuantity: 10,
         sold: 0,
         category: "electronics"
@@ -44,6 +45,13 @@ router.post('/add', (req, res) => {
 */
 
 
+
 /////////////////////////////////////
 // AUTHENTICATED AND AUTHORIZED ROUTES
+
+const requireAuth = require('../middleware/requireAuth');
+// Add an item to cart
+const addtoCart = require("../controllers/userControllers/cartController");
+router.post('/addtoCart', requireAuth, addtoCart);
+
 module.exports = router;
