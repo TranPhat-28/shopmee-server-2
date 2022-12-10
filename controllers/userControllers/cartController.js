@@ -1,6 +1,41 @@
 const cart = require("../../models/cart");
 const product = require("../../models/product");
 
+
+// View cart
+const getCart = async (req, res) => {
+    try{
+        // List of items from cart
+        let cartList = await cart.findOne({ email: req.body.email });
+        const total = cartList.total;
+        cartList = cartList.itemList;
+        
+
+        // A detailed list to display to user
+        let detailedList = [];
+        
+        await Promise.all(cartList.map(async (item) => {
+            const contents = await product.findOne({ _id: item.itemId });
+            // Push the information to the detailed list
+            detailedList.push({
+                _id: contents._id,
+                name: contents.productName,
+                price: contents.price,
+                image: contents.productImage,
+                quantity: item.quantity,
+                total: item.total
+            });
+        }));
+
+        res.json({detailedList, total});
+    }
+    catch(e) {
+        res.json(e.message);
+    }
+}
+
+
+
 // Add item to cart
 const addtoCart = async (req, res) => {
     // Authen OK, check for valid amount
@@ -37,4 +72,7 @@ const addtoCart = async (req, res) => {
     }
 }
 
-module.exports = addtoCart;
+module.exports = {
+    getCart,
+    addtoCart
+}
