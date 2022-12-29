@@ -19,6 +19,7 @@ const getCart = async (req, res) => {
             // Push the information to the detailed list
             detailedList.push({
                 _id: contents._id,
+                idInCart: item._id,
                 name: contents.productName,
                 price: contents.price,
                 image: contents.productImage,
@@ -52,6 +53,7 @@ const addtoCart = async (req, res) => {
 
             // New item to add to cart
             const newItem = {
+                // Reference to the document in Product
                 itemId: data._id,
                 quantity: req.body.quantity,
                 total: cost
@@ -72,7 +74,30 @@ const addtoCart = async (req, res) => {
     }
 }
 
+const removeFromCart = async (req, res) => {
+
+    try{
+        const id = req.params.id;
+        const user = req.user;
+
+        // Find the cart
+        let myCart = await cart.findOne({ email: user });
+        // Filter the item to remove
+        let itemToRemove = await myCart.itemList.filter(item => item._id == id);
+        let cost = itemToRemove[0].total;
+
+        // Remove item
+        const newCart = await cart.findOneAndUpdate({ email: user }, { $pull: {itemList: {_id: id}}, $inc: {total: -cost}});
+
+        res.json(newCart);
+    }catch(e){
+        console.log(e.message);
+        res.json('Something went wrong while removing item from your cart');
+    }
+}
+
 module.exports = {
     getCart,
-    addtoCart
+    addtoCart,
+    removeFromCart
 }

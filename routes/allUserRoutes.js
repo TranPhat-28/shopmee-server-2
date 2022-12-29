@@ -51,9 +51,11 @@ router.post('/add', (req, res) => {
 
 const requireAuth = require('../middleware/requireAuth');
 // Add an item to cart
-const { getCart, addtoCart } = require("../controllers/userControllers/cartController");
+const { getCart, addtoCart, removeFromCart } = require("../controllers/userControllers/cartController");
 router.post('/addtoCart', requireAuth, addtoCart);
 // Get cart
 router.post('/cart', requireAuth, getCart);
+// Remove item from cart
+router.post('/cart/:id', requireAuth, removeFromCart);
 
 module.exports = router;
