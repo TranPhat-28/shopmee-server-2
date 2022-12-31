@@ -89,7 +89,32 @@ const removeFromCart = async (req, res) => {
         // Remove item
         const newCart = await cart.findOneAndUpdate({ email: user }, { $pull: {itemList: {_id: id}}, $inc: {total: -cost}});
 
-        res.json(newCart);
+
+        // Get updated cart full detailed information
+        // List of items from cart
+        let newCartList = await cart.findOne({ email: user });
+        const total = newCartList.total;
+        newCartList = newCartList.itemList;
+        
+
+        // A detailed list to display to user
+        let detailedList = [];
+        
+        await Promise.all(newCartList.map(async (item) => {
+            const contents = await product.findOne({ _id: item.itemId });
+            // Push the information to the detailed list
+            detailedList.push({
+                _id: contents._id,
+                idInCart: item._id,
+                name: contents.productName,
+                price: contents.price,
+                image: contents.productImage,
+                quantity: item.quantity,
+                total: item.total
+            });
+        }));
+
+        res.json({detailedList, total});
     }catch(e){
         console.log(e.message);
         res.json('Something went wrong while removing item from your cart');
