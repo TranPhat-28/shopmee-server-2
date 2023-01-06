@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Product = require("../models/product");
 
+
+/////////////////////////////
+// NON-AUTH ROUTE
+
 // REGISTER
 const userRegister = require('../controllers/userControllers/registerController');
 router.post('/register', userRegister);
@@ -28,6 +32,10 @@ router.get('/product/:id', fetchDetail);
 // For searching
 const fetchSearch = require("../controllers/userControllers/fetchSearch");
 router.get('/search', fetchSearch);
+
+// Fetching voucher information
+const fetchVoucher = require("../controllers/userControllers/fetchVoucher");
+router.get('/vouchers', fetchVoucher);
 
 /*
 router.post('/add', (req, res) => {
@@ -57,5 +65,10 @@ router.post('/addtoCart', requireAuth, addtoCart);
 router.post('/cart', requireAuth, getCart);
 // Remove item from cart
 router.post('/cart/:id', requireAuth, removeFromCart);
+// Fetch user contact information
+const { fetchContactInformation, updateContactInformation } = require('../controllers/userControllers/userInformationController');
+router.get('/user/:email', requireAuth, fetchContactInformation);
+// Update user contact information
+router.post('/user', requireAuth, updateContactInformation);
 
 module.exports = router;
