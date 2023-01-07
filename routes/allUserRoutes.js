@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const Product = require("../models/product");
 
 
 /////////////////////////////
@@ -66,9 +65,11 @@ router.post('/cart', requireAuth, getCart);
 // Remove item from cart
 router.post('/cart/:id', requireAuth, removeFromCart);
 // Fetch user contact information
-const { fetchContactInformation, updateContactInformation } = require('../controllers/userControllers/userInformationController');
+const { fetchContactInformation, updateContactInformation, changePassword } = require('../controllers/userControllers/userInformationController');
 router.get('/user/:email', requireAuth, fetchContactInformation);
 // Update user contact information
 router.post('/user', requireAuth, updateContactInformation);
+// Change user password
+router.post('/userPassword', requireAuth, changePassword);
 
 module.exports = router;
