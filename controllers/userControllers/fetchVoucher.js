@@ -1,35 +1,20 @@
-//const Voucher = require('../models/voucher')
+const voucher = require('../../models/voucher');
 
 const fetchVoucher =  async (req, res) => {
-    // User information
-    //Response obj
-    var resObj = {};
-
-    // Check if logged in or not
-    if (!req.user){
-        resObj.role = null;
-    }
-    else{
-        resObj.role = req.user.role;
-        resObj.email = req.user.email;
-    }
-
-    var nonExpires = null
-    var expires = null
 
     try{
-        nonExpires = await Voucher.find({expirationDate: null})
-        expires = await Voucher.find({ expirationDate: { $ne: null } })
+        const nonExpires = await voucher.find({expirationDate: null}).select('voucherCode summary description');
+        const expires = await voucher.find({ expirationDate: { $ne: null } }).select('voucherCode summary description');
+
+        res.json({
+            nonExpires: nonExpires,
+            expires: expires
+        })
     }
     catch(err) {
-        console.log(err.message)
+        console.log(err.message);
+        res.status(400).json(err.message);
     }
-
-    resObj.nonExpires = nonExpires
-    resObj.expires = expires
-
-
-    res.render('voucher.ejs', resObj)
 }
 
 module.exports = fetchVoucher;
