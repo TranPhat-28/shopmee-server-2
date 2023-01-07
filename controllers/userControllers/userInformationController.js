@@ -18,6 +18,11 @@ const updateContactInformation = async (req, res) => {
     
     newPhonenumber = req.body.newPhonenumber;
     newAddress = req.body.newAddress;
+    
+    // Missing fields
+    if (!newPhonenumber || !newAddress){
+        res.status(400).json('Missing required field(s)')
+    }
 
     try{
         const information = await user.findOneAndUpdate({email: email}, {phonenumber: newPhonenumber, address: newAddress})
