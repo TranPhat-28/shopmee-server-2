@@ -36,6 +36,10 @@ router.get('/search', fetchSearch);
 const fetchVoucher = require("../controllers/userControllers/fetchVoucher");
 router.get('/vouchers', fetchVoucher);
 
+// For voucher validation (when user inputing one)
+const validateVoucher = require('../controllers/userControllers/validateVoucher');
+router.post('/validateVoucher', validateVoucher);
+
 /*
 router.post('/add', (req, res) => {
     const newProduct = new Product({
@@ -66,6 +70,7 @@ router.post('/cart', requireAuth, getCart);
 router.post('/cart/:id', requireAuth, removeFromCart);
 // Fetch user contact information
 const { fetchContactInformation, updateContactInformation, changePassword } = require('../controllers/userControllers/userInformationController');
+const { validate } = require('../models/voucher');
 router.get('/user/:email', requireAuth, fetchContactInformation);
 // Update user contact information
 router.post('/user', requireAuth, updateContactInformation);
