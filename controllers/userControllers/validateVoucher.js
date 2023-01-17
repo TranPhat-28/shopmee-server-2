@@ -30,7 +30,7 @@ const validateVoucher = async (req, res) => {
                 }
             }
             else{
-                message = `Voucher discount: ${result.discountPercent}%`;
+                message = result.discountPercent;
             }
         }
 

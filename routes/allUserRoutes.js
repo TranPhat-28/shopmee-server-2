@@ -76,5 +76,8 @@ router.get('/user/:email', requireAuth, fetchContactInformation);
 router.post('/user', requireAuth, updateContactInformation);
 // Change user password
 router.post('/userPassword', requireAuth, changePassword);
+const { confirmOrder, createOrder } = require('../controllers/userControllers/orderController');
+// Confirm order for user
+router.post('/confirmOrder', requireAuth, confirmOrder);
 
 module.exports = router;
