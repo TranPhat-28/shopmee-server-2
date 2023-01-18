@@ -18,6 +18,8 @@ mongoose.connect(db, {useUnifiedTopology: true, useNewUrlParser: true})
 // App route
 const userRouter = require('./routes/allUserRoutes');
 app.use('/', userRouter);
+const adminRouter = require('./routes/allAdminRoutes');
+app.use('/admin', adminRouter);
 
 
 // START THE APP
