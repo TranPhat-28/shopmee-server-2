@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const requireAdminAuth = (req, res, next) => {
 
     // Verify authentication
@@ -12,10 +11,12 @@ const requireAdminAuth = (req, res, next) => {
     const token = authorization.split(' ')[1];
 
     try{
-        const { _id, email, isAdmin } = jwt.verify(token, process.env.JWT_SECRET);
+        const { _id, email, role } = jwt.verify(token, process.env.JWT_SECRET);
         // Verify OK
-        req.adminUser = email;
-        next();
+        if (role === 'admin'){
+            req.userAdmin = email;
+            next();
+        }
     }
     catch(e){
         console.log(e.message);
