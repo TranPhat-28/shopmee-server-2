@@ -1,10 +1,5 @@
 const product = require('../../models/product');
 
-const fetchAllProducts = async (req, res) => {
-    //const result = await product.find().select('productName');
-    //res.json(result);
-};
-
 const fetchProductsByPage = async (req, res) => {
     const page = req.body.pagenumber;
     try {
@@ -23,28 +18,47 @@ const fetchProductsById = async (req, res) => {
         const result = await product.findOne({ _id: id });
         res.json(result);
     }
-    catch(e){
+    catch (e) {
         res.status(500).json(e.message)
     }
 }
 
 const updateProduct = async (req, res) => {
     const updateParam = req.body;
-    
-    try{
-        const result = await product.findOneAndUpdate({ _id: updateParam._id}, updateParam);
+
+    // Check for missing information
+    //if (!updateParam.productName || !updateParam.description || !updateParam.price || !updateParam.stockQuantity || !updateParam.sold
+    //    || !updateParam.productImage || !updateParam.category) {
+    //    res.status(400).json('Missing required field(s)');
+    //}
+    //else {
+    try {
+        const id = updateParam._id;
+        delete updateParam['_id'];
+
+        const result = await product.findOneAndUpdate({ _id: id }, updateParam);
         res.json('Successfully updated');
     }
-    catch(e){
+    catch (e) {
         res.status(500).json(e.message);
     }
-    
+    //}
+}
 
+const addNewProduct = async (req, res) => {
+    const newProduct = new product(req.body);
+    try{
+        await newProduct.save();
+        res.json('New product added successfully');
+    }
+    catch(e) {
+        res.status(500).json(e.message);
+    }
 }
 
 module.exports = {
-    fetchAllProducts,
     fetchProductsByPage,
     fetchProductsById,
-    updateProduct
+    updateProduct,
+    addNewProduct
 }

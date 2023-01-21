@@ -20,7 +20,7 @@ const productSchema = new mongoose.Schema({
     },
     sold: {
         type: Number,
-        required: true
+        default: 0
     },
     category: {
         type: String,
