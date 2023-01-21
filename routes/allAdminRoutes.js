@@ -5,7 +5,11 @@ const requireAdminAuth = require('../middleware/requireAdminAuth');
 const AdminLogin = require('../controllers/adminControllers/adminLoginController');
 router.post('/adminLogin', AdminLogin);
 // Get all products
-const { fetchAllProducts, fetchProductsByName, fetchProductsByPage } = require('../controllers/adminControllers/allProducts');
+const { fetchAllProducts, fetchProductsById, fetchProductsByPage, updateProduct } = require('../controllers/adminControllers/allProductsController');
 router.post('/allproducts', requireAdminAuth, fetchProductsByPage);
+// Get detail for one product
+router.get('/allproducts/:id', requireAdminAuth, fetchProductsById);
+// For updating product's information
+router.post('/products/:id', requireAdminAuth, updateProduct);
 
 module.exports = router;
