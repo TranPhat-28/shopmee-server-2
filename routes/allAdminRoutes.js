@@ -6,8 +6,9 @@ const AdminLogin = require('../controllers/adminControllers/adminLoginController
 router.post('/adminLogin', AdminLogin);
 
 
-// Get all products
+// PRODUCTS
 const { fetchProductsById, fetchProductsByPage, updateProduct, addNewProduct } = require('../controllers/adminControllers/allProductsController');
+// Get all products
 router.post('/allproducts', requireAdminAuth, fetchProductsByPage);
 // Get detail for one product
 router.get('/allproducts/:id', requireAdminAuth, fetchProductsById);
@@ -18,6 +19,7 @@ router.post('/addProduct', requireAdminAuth, addNewProduct);
 
 
 
+// VOUCHERS
 const { fetchVouchersByPage, fetchVoucherById, addNewVoucher, deleteVoucher } = require('../controllers/adminControllers/allVouchersController');
 // For fetching all vouchers
 router.post('/allVouchers', requireAdminAuth, fetchVouchersByPage);
@@ -27,5 +29,16 @@ router.get('/voucher/:id', requireAdminAuth, fetchVoucherById);
 router.post('/voucher', requireAdminAuth, addNewVoucher);
 // Delete a voucher
 router.delete('/voucher', requireAdminAuth, deleteVoucher);
+
+
+
+// USERS
+const { fetchUsersByPage, fetchUserById } = require('../controllers/adminControllers/allUsersController');
+// Fetch users by page
+router.post('/allUsers', requireAdminAuth, fetchUsersByPage);
+// Get detail for one voucher
+router.get('/allUsers/:id', requireAdminAuth, fetchUserById);
+
+
 
 module.exports = router;
