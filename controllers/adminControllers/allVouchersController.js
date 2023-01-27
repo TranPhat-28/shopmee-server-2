@@ -25,29 +25,17 @@ const fetchVoucherById = async (req, res) => {
     }
 }
 
-/*
-const updateProduct = async (req, res) => {
-    const updateParam = req.body;
-
-    // Check for missing information
-    //if (!updateParam.productName || !updateParam.description || !updateParam.price || !updateParam.stockQuantity || !updateParam.sold
-    //    || !updateParam.productImage || !updateParam.category) {
-    //    res.status(400).json('Missing required field(s)');
-    //}
-    //else {
-    try {
-        const id = updateParam._id;
-        delete updateParam['_id'];
-
-        const result = await product.findOneAndUpdate({ _id: id }, updateParam);
-        res.json('Successfully updated');
+const deleteVoucher = async (req, res) => {
+    const toDelete = req.body;
+    //console.log('Delete voucher ' + voucher._id);
+    try{
+        await voucher.findOneAndDelete({ _id: toDelete._id, voucherCode: toDelete.voucherCode});
+        res.json('Voucher successfully deleted');
     }
-    catch (e) {
-        res.status(500).json(e.message);
+    catch(e){
+        res.status(500).json(e.message)
     }
-    //}
 }
-*/
 
 const addNewVoucher = async (req, res) => {
     const newVoucher = req.body;
@@ -75,5 +63,6 @@ const addNewVoucher = async (req, res) => {
 module.exports = {
     fetchVouchersByPage,
     fetchVoucherById,
-    addNewVoucher
+    addNewVoucher,
+    deleteVoucher
 }

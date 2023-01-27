@@ -18,12 +18,14 @@ router.post('/addProduct', requireAdminAuth, addNewProduct);
 
 
 
-const { fetchVouchersByPage, fetchVoucherById, addNewVoucher } = require('../controllers/adminControllers/allVouchersController');
+const { fetchVouchersByPage, fetchVoucherById, addNewVoucher, deleteVoucher } = require('../controllers/adminControllers/allVouchersController');
 // For fetching all vouchers
 router.post('/allVouchers', requireAdminAuth, fetchVouchersByPage);
 // Get detail for one voucher
 router.get('/voucher/:id', requireAdminAuth, fetchVoucherById);
 // Add a new voucher
 router.post('/voucher', requireAdminAuth, addNewVoucher);
+// Delete a voucher
+router.delete('/voucher', requireAdminAuth, deleteVoucher);
 
 module.exports = router;
