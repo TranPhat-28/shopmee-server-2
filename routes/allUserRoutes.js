@@ -40,21 +40,6 @@ router.get('/vouchers', fetchVoucher);
 const validateVoucher = require('../controllers/userControllers/validateVoucher');
 router.post('/validateVoucher', validateVoucher);
 
-/*
-router.post('/add', (req, res) => {
-    const newProduct = new Product({
-        productName: "Oppo Reno",
-        description: "A very competent product with a reasonable price.",
-        price: 9000000,
-        stockQuantity: 10,
-        sold: 0,
-        category: "electronics"
-    })
-
-    newProduct.save().then(() => { res.json("OK") });
-})
-*/
-
 
 
 /////////////////////////////////////
@@ -79,5 +64,11 @@ router.post('/userPassword', requireAuth, changePassword);
 const { confirmOrder, createOrder } = require('../controllers/userControllers/orderController');
 // Confirm order for user
 router.post('/confirmOrder', requireAuth, confirmOrder);
+
+
+
+// Submit report
+const submitReport = require('../controllers/userControllers/reportController');
+router.post('/report', requireAuth, submitReport);
 
 module.exports = router;

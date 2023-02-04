@@ -18,7 +18,12 @@ const requireAuth = (req, res, next) => {
     }
     catch(e){
         console.log(e.message);
-        return res.status(401).json({ error: "Unauthorized: User verify failed" });
+        if (e.message == 'jwt expired'){
+            return res.status(401).json({ error: 'Your session expired. Please logout and login again'});
+        }
+        else{
+            return res.status(401).json({ error: "Unauthorized: User verify failed" });
+        }
     }
 
 }

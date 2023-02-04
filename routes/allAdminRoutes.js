@@ -40,5 +40,14 @@ router.post('/allUsers', requireAdminAuth, fetchUsersByPage);
 router.get('/allUsers/:id', requireAdminAuth, fetchUserById);
 
 
+// REPORTS
+const { fetchReportsByPage, fetchReportById, deleteReport } = require('../controllers/adminControllers/allReportsController');
+// For fetching all reports
+router.post('/reports', requireAdminAuth, fetchReportsByPage);
+// Get detail for one report
+router.get('/reports/:id', requireAdminAuth, fetchReportById);
+// Delete a report
+router.delete('/report', requireAdminAuth, deleteReport);
+
 
 module.exports = router;
