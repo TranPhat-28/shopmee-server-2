@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 // Schema for each product in the order
 const orderItemSchema = new mongoose.Schema({
+    productId: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true,
@@ -10,6 +14,10 @@ const orderItemSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    productImage: {
+        type: String,
+        required: true
+    },
     quantity: {
         type: Number,
         required: true,
@@ -17,14 +25,6 @@ const orderItemSchema = new mongoose.Schema({
     totalPrice: {
         type: Number,
         required: true,
-    },
-    reference: {
-        type: String,
-        required: true
-    },
-    productImage: {
-        type: imageSchema,
-        required: true
     },
     feedbackStatus: {
         type: String,
@@ -42,11 +42,19 @@ const orderSchema = new mongoose.Schema({
         type: [ orderItemSchema ],
         required: true
     },
+    voucherUsed: {
+        type: String,
+        required: true
+    },
     totalCost: {
         type: Number,
         required: true
     },
-    discount: {
+    discountAmount: {
+        type: Number,
+        required: true
+    },
+    finalCost: {
         type: Number,
         required: true
     },

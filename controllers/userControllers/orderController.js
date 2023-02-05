@@ -1,6 +1,7 @@
 const cart = require("../../models/cart");
 const product = require("../../models/product");
 const voucher = require("../../models/voucher");
+const order = require("../../models/order");
 
 
 // Only perform checking voucher
@@ -35,7 +36,7 @@ const validateAllItems = async (req, res, next) => {
 
     // Fetching data for each item
     await Promise.all(itemList.map(async (item) => {
-        const result = await product.findOne({ _id: item._id}).select('stockQuantity')
+        const result = await product.findOne({ _id: item._id }).select('stockQuantity')
         validateArray.push({
             name: item.name,
             orderQuantity: item.quantity,
@@ -46,19 +47,19 @@ const validateAllItems = async (req, res, next) => {
     // Perform checking
     let issue = false;
     validateArray.forEach(item => {
-        if (item.orderQuantity > item.stock){
+        if (item.orderQuantity > item.stock) {
             issue = true;
             res.status(500).json(item.name + ' is lower in stock than in your order. Please remove the item and retry');
         }
     })
 
-    if (!issue){
+    if (!issue) {
         next()
     }
 }
 
 // If no issue, create the order
-const createOrder = (req, res) => {
+const createOrder = async (req, res) => {
     const itemList = req.body.itemList;
     const voucherUsed = req.body.voucherUsed;
     const discount = req.body.discount;
@@ -66,11 +67,59 @@ const createOrder = (req, res) => {
     const discountAmount = req.body.discountAmount;
     const final = req.body.final;
 
+    // Create a new array of items for the order
+    const newItemList = [];
+    // Push all items to the new array
+    itemList.forEach(item => {
+        newItemList.push({
+            productId: item._id,
+            name: item.name,
+            price: item.price,
+            productImage: item.image,
+            quantity: item.quantity,
+            totalPrice: item.total,
+            feedbackStatus: 'waiting'
+        })
+    })
+
+    // New order
+    const newOrder = new order({
+        email: req.user,
+        itemList: newItemList,
+        voucherUsed: voucherUsed,
+        totalCost: total,
+        discountAmount: discountAmount,
+        finalCost: final,
+        status: 'pending'
+    })
+
+    // ALL PROMISES
+    const promisesArray = [];
+    // 1 - Create new order
+    promisesArray.push(newOrder.save());
+    // 2 - Substract product from stock and increase sold count
+    itemList.forEach(item => {
+        promisesArray.push(product.findOneAndUpdate({_id: item._id}, { $inc: { stockQuantity: -item.quantity, sold: item.quantity} }))
+    })
+    // 3 - Add user to voucher checklist
+    promisesArray.push(voucher.findOneAndUpdate({voucherCode: voucherUsed},  { $push: { users: req.user } }));
+    // 4 - Empty the cart
+    promisesArray.push(cart.findOneAndUpdate({email: req.user}, {itemList: [], total: 0}));
+
+    try {
+        const resultAll = Promise.all(promisesArray);
+        res.json('Your order has been created');
+    }
+    catch(e){
+        console.log(e.message)
+    }
+
+    /*
     console.log('Create order: ' + req.user);
     console.log('----------');
 
     itemList.forEach(item => {
-        console.log(item.name)
+        console.log(item)
     })
 
     console.log('----------');
@@ -82,6 +131,7 @@ const createOrder = (req, res) => {
     console.log('Total: ' + total);
     console.log('Discount amount: ' + discountAmount);
     console.log('Final: ' + final);
+    */
 }
 
 module.exports = {
