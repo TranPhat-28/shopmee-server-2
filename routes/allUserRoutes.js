@@ -63,9 +63,11 @@ router.post('/user', requireAuth, updateContactInformation);
 router.post('/userPassword', requireAuth, changePassword);
 
 
-const { confirmValidVoucherUser, validateAllItems, createOrder } = require('../controllers/userControllers/orderController');
+const { confirmValidVoucherUser, validateAllItems, createOrder, fetchOrdersByPage } = require('../controllers/userControllers/orderController');
 // Validate and create order
 router.post('/confirmOrder', requireAuth, confirmValidVoucherUser, validateAllItems, createOrder);
+// Retrieve order
+router.post('/myOrders', requireAuth, fetchOrdersByPage);
 
 
 

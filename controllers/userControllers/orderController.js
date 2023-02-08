@@ -134,8 +134,38 @@ const createOrder = async (req, res) => {
     */
 }
 
+
+// Retrieve all orders of user
+const fetchOrdersByPage = async (req, res) => {
+    const page = req.body.pagenumber;
+    const status = req.body.status;
+
+    try {
+        const result = await order.find({ email: req.user, status: status }).select('dateCreated status').skip(page * 5).limit(5);
+        res.json(result);
+    }
+    catch (e) {
+        res.status(500).json(e.message)
+    }
+}
+
+const fetchOrderById = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const result = await order.findOne({ _id: id });
+        res.json(result);
+    }
+    catch (e) {
+        res.status(500).json(e.message)
+    }
+}
+
+
 module.exports = {
     confirmValidVoucherUser,
     validateAllItems,
-    createOrder
+    createOrder,
+    fetchOrdersByPage,
+    fetchOrderById
 }
