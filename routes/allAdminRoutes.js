@@ -50,4 +50,15 @@ router.get('/reports/:id', requireAdminAuth, fetchReportById);
 router.delete('/report', requireAdminAuth, deleteReport);
 
 
+// ORDERS
+const { fetchPendingOrdersByPage, fetchOrderById, confirmShippingOrder, fetchConfirmedOrdersByPage } = require('../controllers/adminControllers/adminOrderController');
+// Fetch pending orders by page
+router.post('/pendingOrders', requireAdminAuth, fetchPendingOrdersByPage);
+// Fetch confirmed orders by page
+router.post('/confirmedOrders', requireAdminAuth, fetchConfirmedOrdersByPage);
+// Fetch order by ID
+router.get('/orders/:id', requireAdminAuth, fetchOrderById);
+// Confirmation for a pending orders
+router.post('/pendingOrders/:id', requireAdminAuth, confirmShippingOrder);
+
 module.exports = router;
