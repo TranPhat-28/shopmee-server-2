@@ -7,15 +7,15 @@ router.post('/adminLogin', AdminLogin);
 
 
 // PRODUCTS
-const { fetchProductsById, fetchProductsByPage, updateProduct, addNewProduct } = require('../controllers/adminControllers/allProductsController');
+const { fetchProductsById, fetchProductsByPage, updateProduct, addNewProduct, validateInformationforUpdate, validateInformationforAdding } = require('../controllers/adminControllers/allProductsController');
 // Get all products
 router.post('/allproducts', requireAdminAuth, fetchProductsByPage);
 // Get detail for one product
 router.get('/allproducts/:id', requireAdminAuth, fetchProductsById);
 // For updating product's information
-router.post('/products/:id', requireAdminAuth, updateProduct);
+router.post('/products/:id', requireAdminAuth, validateInformationforUpdate, updateProduct);
 // For adding a new product
-router.post('/addProduct', requireAdminAuth, addNewProduct);
+router.post('/addProduct', requireAdminAuth, validateInformationforAdding, addNewProduct);
 
 
 

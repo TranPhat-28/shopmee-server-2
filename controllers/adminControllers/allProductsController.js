@@ -30,15 +30,22 @@ const fetchProductsById = async (req, res) => {
     }
 }
 
+const validateInformationforUpdate = (req, res, next) => {
+    const updateParam = req.body;
+    // Check for missing information
+    if (!updateParam._id || !updateParam.productName || !updateParam.description || !updateParam.price || !updateParam.stockQuantity || !updateParam.sold
+        || !updateParam.productImage || !updateParam.category) {
+        res.status(400).json('Missing required field(s)');
+    }
+    // Check for valid data type
+    // Else OK
+    else{
+        next();
+    }
+}
+
 const updateProduct = async (req, res) => {
     const updateParam = req.body;
-
-    // Check for missing information
-    //if (!updateParam.productName || !updateParam.description || !updateParam.price || !updateParam.stockQuantity || !updateParam.sold
-    //    || !updateParam.productImage || !updateParam.category) {
-    //    res.status(400).json('Missing required field(s)');
-    //}
-    //else {
     try {
         const id = updateParam._id;
         delete updateParam['_id'];
@@ -50,6 +57,20 @@ const updateProduct = async (req, res) => {
         res.status(500).json(e.message);
     }
     //}
+}
+
+const validateInformationforAdding = (req, res, next) => {
+    const updateParam = req.body;
+
+    // Check for missing information
+    if (!updateParam.productName || !updateParam.description || !updateParam.price || !updateParam.stockQuantity || !updateParam.productImage || !updateParam.category) {
+        res.status(400).json('Missing required field(s)');
+    }
+    // Check for valid data type
+    // Else OK
+    else{
+        next();
+    }
 }
 
 const addNewProduct = async (req, res) => {
@@ -75,5 +96,7 @@ module.exports = {
     fetchProductsByPage,
     fetchProductsById,
     updateProduct,
-    addNewProduct
+    addNewProduct,
+    validateInformationforUpdate,
+    validateInformationforAdding
 }
