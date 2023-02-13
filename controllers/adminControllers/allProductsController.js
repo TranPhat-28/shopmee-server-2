@@ -5,7 +5,13 @@ const fetchProductsByPage = async (req, res) => {
     const page = req.body.pagenumber;
     try {
         const result = await product.find().select('productName').skip(page * 5).limit(5);
-        res.json(result);
+        if (result.length === 0){
+            res.json(
+                [{productName: 'No more result to display'}]
+            );
+        }else{
+            res.json(result);
+        }  
     }
     catch (e) {
         res.status(500).json(e.message)
