@@ -6,7 +6,13 @@ const fetchVouchersByPage = async (req, res) => {
     const page = req.body.pagenumber;
     try {
         const result = await voucher.find().select('voucherCode').skip(page * resultPerPage).limit(resultPerPage);
-        res.json(result);
+        if (result.length === 0){
+            res.json(
+                [{voucherCode: 'No more result to display'}]
+            );
+        }else{
+            res.json(result);
+        }  
     }
     catch (e) {
         res.status(500).json(e.message)
@@ -39,11 +45,15 @@ const deleteVoucher = async (req, res) => {
 
 const addNewVoucher = async (req, res) => {
     const newVoucher = req.body;
-    if ((newVoucher.noexp === false) && (newVoucher.exp === '')) {
+    // Check for missing information
+    if (newVoucher.voucherCode === '' || newVoucher.discountPercent === '' || newVoucher.summary === '' || newVoucher.description === '') {
+        res.status(400).json('Missing required field(s)');
+    }
+    else if ((newVoucher.noexp === false) && (newVoucher.expirationDate === '')) {
         res.status(400).json('Expiration date must be set')
     }
     else if(newVoucher.discountPercent > 100 || newVoucher.discountPercent < 1){
-        res.status(400).json('Discount must be from 1 to 100')
+        res.status(400).json('Discount must be between 1 and 100')
     }
     else {
         try {
@@ -64,5 +74,5 @@ module.exports = {
     fetchVouchersByPage,
     fetchVoucherById,
     addNewVoucher,
-    deleteVoucher
+    deleteVoucher,
 }

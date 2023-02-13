@@ -37,7 +37,6 @@ const validateInformationforUpdate = (req, res, next) => {
         || !updateParam.productImage || !updateParam.category) {
         res.status(400).json('Missing required field(s)');
     }
-    // Check for valid data type
     // Else OK
     else{
         next();
