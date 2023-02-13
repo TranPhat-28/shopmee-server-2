@@ -60,8 +60,12 @@ const validateAllItems = async (req, res, next) => {
 
 // If no issue, create the order
 const createOrder = async (req, res) => {
+
     const itemList = req.body.itemList;
-    const voucherUsed = req.body.voucherUsed;
+    let voucherUsed = req.body.voucherUsed;
+    if (voucherUsed === '') {
+        voucherUsed = 'None'
+    }
     const discount = req.body.discount;
     const total = req.body.total;
     const discountAmount = req.body.discountAmount;

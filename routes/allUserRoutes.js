@@ -63,16 +63,26 @@ router.post('/user', requireAuth, updateContactInformation);
 router.post('/userPassword', requireAuth, changePassword);
 
 
-const { confirmValidVoucherUser, validateAllItems, createOrder, fetchOrdersByPage } = require('../controllers/userControllers/orderController');
+const { confirmValidVoucherUser, validateAllItems, createOrder, fetchOrdersByPage, fetchOrderById } = require('../controllers/userControllers/orderController');
 // Validate and create order
 router.post('/confirmOrder', requireAuth, confirmValidVoucherUser, validateAllItems, createOrder);
-// Retrieve order
+// Retrieve a list of all order (by page)
 router.post('/myOrders', requireAuth, fetchOrdersByPage);
+// Get detail information for one order
+router.get('/myOrders/:id', requireAuth, fetchOrderById);
 
 
 
 // Submit report
 const submitReport = require('../controllers/userControllers/reportController');
 router.post('/report', requireAuth, submitReport);
+
+
+// Feedback
+const { fetchFeedbacksByPage, submitFeedback } = require("../controllers/userControllers/feedbackController");
+// User submits a feedback
+router.post('/feedback', requireAuth, submitFeedback);
+// Fetch feedback by page
+router.post('/feedback/:id', fetchFeedbacksByPage);
 
 module.exports = router;

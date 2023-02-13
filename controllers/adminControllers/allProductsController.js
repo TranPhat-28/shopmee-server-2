@@ -1,4 +1,5 @@
 const product = require('../../models/product');
+const feedback = require('../../models/feedback');
 
 const fetchProductsByPage = async (req, res) => {
     const page = req.body.pagenumber;
@@ -48,7 +49,15 @@ const updateProduct = async (req, res) => {
 const addNewProduct = async (req, res) => {
     const newProduct = new product(req.body);
     try{
-        await newProduct.save();
+        // Create a new product
+        const result = await newProduct.save();
+        // Then create a new feedback for the new product
+        const newFeedback = new feedback({
+            productID: result._id,
+            feedbackList: []
+        })
+        await newFeedback.save();
+        
         res.json('New product added successfully');
     }
     catch(e) {
