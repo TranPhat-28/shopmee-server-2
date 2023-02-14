@@ -21,6 +21,8 @@ app.use('/', userRouter);
 const adminRouter = require('./routes/allAdminRoutes');
 app.use('/admin', adminRouter);
 
+
+// For testing
 app.get('/welcome', (req, res) => {
     res.send('HELLO');
 })
