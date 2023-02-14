@@ -23,7 +23,7 @@ app.use('/admin', adminRouter);
 
 
 // For testing
-app.get('/welcome', (req, res) => {
+app.get('/', (req, res) => {
     res.send('HELLO');
 })
 
