@@ -34,14 +34,15 @@ const fetchSearch = (req, res) => {
         }
 
         // Page number
-        //const page = req.query.page
+        const page = req.body.pagenumber;
+        const resultPerPage = 5;
         // Show 10 per page
         //let resultPromise = await Product.find(queryObj).skip((page - 1) * 10).limit(10).catch(e => {
         //    console.log(e.message)
         //})
 
 
-        Product.find(queryObj).then(data => {
+        Product.find(queryObj).skip(page * resultPerPage).limit(resultPerPage).then(data => {
             //console.log(data)
             res.json(data);
         }).catch(e => {

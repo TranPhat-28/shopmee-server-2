@@ -30,7 +30,7 @@ router.get('/product/:id', fetchDetail);
 
 // For searching
 const fetchSearch = require("../controllers/userControllers/fetchSearch");
-router.get('/search', fetchSearch);
+router.post('/search', fetchSearch);
 
 // Fetching voucher information
 const fetchVoucher = require("../controllers/userControllers/fetchVoucher");
@@ -67,7 +67,7 @@ const { confirmValidVoucherUser, validateAllItems, createOrder, fetchOrdersByPag
 // Validate and create order
 router.post('/confirmOrder', requireAuth, confirmValidVoucherUser, validateAllItems, createOrder);
 // Retrieve a list of all order (by page)
-router.post('/myOrders', requireAuth, fetchOrdersByPage);
+router.post('/myOrders/:status', requireAuth, fetchOrdersByPage);
 // Get detail information for one order
 router.get('/myOrders/:id', requireAuth, fetchOrderById);
 

@@ -142,7 +142,7 @@ const createOrder = async (req, res) => {
 // Retrieve all orders of user
 const fetchOrdersByPage = async (req, res) => {
     const page = req.body.pagenumber;
-    const status = req.body.status;
+    const status = req.params.status;
 
     try {
         const result = await order.find({ email: req.user, status: status }).select('dateCreated status').skip(page * 5).limit(5);
