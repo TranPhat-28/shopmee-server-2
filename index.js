@@ -21,6 +21,10 @@ app.use('/', userRouter);
 const adminRouter = require('./routes/allAdminRoutes');
 app.use('/admin', adminRouter);
 
+app.get('/welcome', (req, res) => {
+    res.send('HELLO');
+})
+
 
 // START THE APP
 app.listen(process.env.PORT || 5000, console.log('Server started'));
