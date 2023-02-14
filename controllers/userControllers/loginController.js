@@ -45,7 +45,7 @@ const userLogin = (req, res) => {
             }
         })
             .catch(e => {
-                res.status(400).json('Something went wrong');
+                res.status(400).json(e.message);
                 console.log(e);
             })
     }
