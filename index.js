@@ -22,11 +22,6 @@ const adminRouter = require('./routes/allAdminRoutes');
 app.use('/admin', adminRouter);
 
 
-// For testing
-app.get('/', (req, res) => {
-    res.send('HELLO');
-})
-
 
 // START THE APP
 app.listen(process.env.PORT || 5000, console.log('Server started'));
