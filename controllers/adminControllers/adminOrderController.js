@@ -8,7 +8,13 @@ const fetchPendingOrdersByPage = async (req, res) => {
     const page = req.body.pagenumber;
     try {
         const result = await order.find({ status: 'pending' }).select('_id').skip(page * resultPerPage).limit(resultPerPage);
-        res.json(result);
+        if (result.length === 0){
+            res.json(
+                [{_id: 'No more result to display'}]
+            );
+        }else{
+            res.json(result);
+        }  
     }
     catch (e) {
         res.status(500).json(e.message)
@@ -46,7 +52,13 @@ const fetchConfirmedOrdersByPage = async (req, res) => {
     const page = req.body.pagenumber;
     try {
         const result = await order.find({ status: 'confirmed' }).select('_id').skip(page * resultPerPage).limit(resultPerPage);
-        res.json(result);
+        if (result.length === 0){
+            res.json(
+                [{_id: 'No more result to display'}]
+            );
+        }else{
+            res.json(result);
+        }  
     }
     catch (e) {
         res.status(500).json(e.message)

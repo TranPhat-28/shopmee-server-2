@@ -33,11 +33,15 @@ router.delete('/voucher', requireAdminAuth, deleteVoucher);
 
 
 // USERS
-const { fetchUsersByPage, fetchUserById } = require('../controllers/adminControllers/allUsersController');
+const { fetchUsersByPage, fetchUserById, restrictUser, removeRestrictUser } = require('../controllers/adminControllers/allUsersController');
 // Fetch users by page
 router.post('/allUsers', requireAdminAuth, fetchUsersByPage);
 // Get detail for one voucher
 router.get('/allUsers/:id', requireAdminAuth, fetchUserById);
+// Restrict user
+router.post('/restrict', requireAdminAuth, restrictUser);
+// Remove restrict
+router.post('/removeRestrict', requireAdminAuth, removeRestrictUser);
 
 
 // REPORTS

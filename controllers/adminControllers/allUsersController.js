@@ -6,7 +6,13 @@ const fetchUsersByPage = async (req, res) => {
     const page = req.body.pagenumber;
     try {
         const result = await user.find({email: {$ne : "admin@admin"}}).select('email').skip(page * resultPerPage).limit(resultPerPage);
-        res.json(result);
+        if (result.length === 0){
+            res.json(
+                [{email: 'No more result to display'}]
+            );
+        }else{
+            res.json(result);
+        }  
     }
     catch (e) {
         res.status(500).json(e.message)
@@ -26,19 +32,33 @@ const fetchUserById = async (req, res) => {
 }
 
 
-/*
-const deleteVoucher = async (req, res) => {
-    const toDelete = req.body;
-    //console.log('Delete voucher ' + voucher._id);
-    try{
-        await voucher.findOneAndDelete({ _id: toDelete._id, voucherCode: toDelete.voucherCode});
-        res.json('Voucher successfully deleted');
+
+const restrictUser = async (req, res) => {
+    const toRestict = req.body._id;
+
+    try {
+        const result = await user.findOneAndUpdate({ _id: toRestict }, { status: "restricted" });
+        res.json("User has been restricted!");
     }
     catch(e){
         res.status(500).json(e.message)
     }
 }
 
+const removeRestrictUser = async (req, res) => {
+    const toRestict = req.body._id;
+
+    try {
+        const result = await user.findOneAndUpdate({ _id: toRestict }, { status: "active" });
+        res.json("Restriction has been removed!");
+    }
+    catch(e){
+        res.status(500).json(e.message)
+    }
+}
+
+
+/*
 const addNewVoucher = async (req, res) => {
     const newVoucher = req.body;
     if ((newVoucher.noexp === false) && (newVoucher.exp === '')) {
@@ -66,5 +86,7 @@ const addNewVoucher = async (req, res) => {
 
 module.exports = {
     fetchUsersByPage,
-    fetchUserById
+    fetchUserById,
+    restrictUser,
+    removeRestrictUser
 }

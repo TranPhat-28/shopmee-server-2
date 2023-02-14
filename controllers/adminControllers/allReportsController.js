@@ -6,7 +6,13 @@ const fetchReportsByPage = async (req, res) => {
     const page = req.body.pagenumber;
     try {
         const result = await report.find().select('title status').skip(page * resultPerPage).limit(resultPerPage);
-        res.json(result);
+        if (result.length === 0){
+            res.json(
+                [{title: 'No more result to display'}]
+            );
+        }else{
+            res.json(result);
+        }  
     }
     catch (e) {
         res.status(500).json(e.message)
