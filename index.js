@@ -28,3 +28,7 @@ app.get('/welcome', (req, res) => {
 
 // START THE APP
 app.listen(process.env.PORT || 5000, console.log('Server started'));
+
+
+// For VERCEL deploying
+module.exports = app;
